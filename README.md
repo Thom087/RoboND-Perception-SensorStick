@@ -1,7 +1,5 @@
 # Euclidean Clustering with ROS and PCL
 
-In this exercise you will start building up your perception pipeline in ROS.  Here, you are provided a gazebo world, which contains the same table and random objects from Exercise-1.
-
 A simple stick robot with an RGB-D camera attached to its head via a pan-tilt joint is placed in front of the table.  For the detailed steps of how to carry out this exercise, please see the [Clustering for Segmentation](https://classroom.udacity.com/nanodegrees/nd209/parts/586e8e81-fc68-4f71-9cab-98ccd4766cfe/modules/e5bfcfbd-3f7d-43fe-8248-0c65d910345a/lessons/2cc29bbd-5c51-4c3e-b238-1282e4f24f42/concepts/02428d63-6f79-40dc-8105-31eda8e0def4) lesson in the RoboND classroom.
 
 Here's a brief summary of how to get setup for the exercise:
@@ -56,8 +54,6 @@ You will find `pcl_helper.py` file under `/sensor_stick/scripts`. This file cont
 Refer to the main README file for documentation on `python-pcl` and `pcl_helper.py` modules
 
 # Object Recognition with Python, ROS and PCL
-
-This exercise builds on what you've done in Exercises 1 and 2. If you haven't done those yet, you should start by completing the [Lesson for Exercise-1](https://classroom.udacity.com/nanodegrees/nd209/parts/586e8e81-fc68-4f71-9cab-98ccd4766cfe/modules/e5bfcfbd-3f7d-43fe-8248-0c65d910345a/lessons/8d51e0bf-0fa1-49a7-bd45-e062c4a2121f/concepts/02cbb56e-9e54-4c08-977b-df149cb0bca4) and the [Lesson for Exercise-2](https://classroom.udacity.com/nanodegrees/nd209/parts/586e8e81-fc68-4f71-9cab-98ccd4766cfe/modules/e5bfcfbd-3f7d-43fe-8248-0c65d910345a/lessons/2cc29bbd-5c51-4c3e-b238-1282e4f24f42/concepts/02428d63-6f79-40dc-8105-31eda8e0def4?contentVersion=1.0.0&contentLocale=en-us). 
 
 In this exercise, you will continue building up your perception pipeline in ROS.  Here you are provided with a very simple gazebo world, where you can extract color and shape features from the objects that were sitting on the table from Exercise-1 and Exercise-2, in order to train a classifier to detect them.
 
