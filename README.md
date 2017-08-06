@@ -32,6 +32,9 @@ $ roslaunch sensor_stick robot_spawn.launch
 $ ./segmentation.py
 ```
 
+[image1]: ./misc_images/exercise2.png
+
+
 ![screen shot 2017-07-05 at 12 56 36 pm](https://user-images.githubusercontent.com/20687560/27895526-30da599c-61c8-11e7-80ab-4b4224cfbb10.png)
 To perform the solution build your perception pipeline, that must perform following steps:
 
@@ -46,7 +49,7 @@ To perform the solution build your perception pipeline, that must perform follow
 5. Create a XYZRGB point cloud such that each cluster obtained from the previous step has its own unique color.
 
 6. Finally publish your colored cluster cloud on a separate topic 
-![clusters](https://user-images.githubusercontent.com/9555001/27804180-604d6e04-5fe2-11e7-9f33-d8d8da9a8bc0.png)
+![clusters][image1]
 
 
 You will find `pcl_helper.py` file under `/sensor_stick/scripts`. This file contains various functions to help you build up your perception pipeline. 
