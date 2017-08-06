@@ -21,7 +21,7 @@ def pcl_callback(pcl_msg):
     passthrough = cloud_filtered.make_passthrough_filter()
     filter_axis = 'z'
     passthrough.set_filter_field_name (filter_axis)
-    axis_min = 0.75	# all under axis_min [m] is erased
+    axis_min = 0.77	# all under axis_min [m] is erased
     axis_max = 1.1	# all over axis_max [m] is erased
     passthrough.set_filter_limits (axis_min, axis_max)
     cloud_filtered = passthrough.filter()
@@ -31,7 +31,7 @@ def pcl_callback(pcl_msg):
     seg.set_model_type(pcl.SACMODEL_PLANE)
     seg.set_method_type(pcl.SAC_RANSAC)
     # how close a point must be to the model in order to be considered as an inlier
-    max_distance = 0.02 # [m]
+    max_distance = 0.005 # [m]
     seg.set_distance_threshold(max_distance)
 
     # Extract inliers and outliers
