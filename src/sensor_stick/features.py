@@ -10,7 +10,7 @@ def rgb_to_hsv(rgb_list):
     return hsv_normalized
 
 
-def compute_color_histograms(cloud, using_hsv=False):
+def compute_color_histograms(cloud, bins, using_hsv=False):
 
     # Compute histograms for the clusters
     point_colors_list = []
@@ -34,9 +34,9 @@ def compute_color_histograms(cloud, using_hsv=False):
         channel_3_vals.append(color[2])
     
     # Compute histograms
-    channel_1_hist = np.histogram(channel_1_vals, bins=16, range=(0,256))
-    channel_2_hist = np.histogram(channel_2_vals, bins=16, range=(0,256))
-    channel_3_hist = np.histogram(channel_3_vals, bins=16, range=(0,256))
+    channel_1_hist = np.histogram(channel_1_vals, bins=bins, range=(0,256))
+    channel_2_hist = np.histogram(channel_2_vals, bins=bins, range=(0,256))
+    channel_3_hist = np.histogram(channel_3_vals, bins=bins, range=(0,256))
 
     # Concatenate and normalize the histograms
     hist_features = np.concatenate((channel_1_hist[0], channel_2_hist[0], channel_2_hist[0])).astype(np.float64)
@@ -48,7 +48,7 @@ def compute_color_histograms(cloud, using_hsv=False):
     return normed_features 
 
 
-def compute_normal_histograms(normal_cloud):
+def compute_normal_histograms(normal_cloud, bins):
     norm_x_vals = []
     norm_y_vals = []
     norm_z_vals = []
@@ -61,9 +61,9 @@ def compute_normal_histograms(normal_cloud):
         norm_z_vals.append(norm_component[2])
 
     # Compute histograms of normal values (just like with color)
-    norm_x_hist = np.histogram(norm_x_vals, bins=16, range=(0, 1)) # why is there a min range of -1 and not 0?
-    norm_y_hist = np.histogram(norm_y_vals, bins=16, range=(0, 1))
-    norm_z_hist = np.histogram(norm_z_vals, bins=16, range=(0, 1))
+    norm_x_hist = np.histogram(norm_x_vals, bins=bins, range=(0, 1)) # why is there a min range of -1 and not 0?
+    norm_y_hist = np.histogram(norm_y_vals, bins=bins, range=(0, 1))
+    norm_z_hist = np.histogram(norm_z_vals, bins=bins, range=(0, 1))
 	
     # Concatenate and normalize the histograms
     hist_features = np.concatenate((norm_x_hist[0], norm_y_hist[0], norm_z_hist[0])).astype(np.float64)

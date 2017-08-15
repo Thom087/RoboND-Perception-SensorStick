@@ -45,12 +45,12 @@ def pcl_callback(pcl_msg):
     seg = cloud_filtered.make_segmenter()
     seg.set_model_type(pcl.SACMODEL_PLANE)
     seg.set_method_type(pcl.SAC_RANSAC)
+    max_distance = 0.005 # [m] 0.01
+    seg.set_distance_threshold(max_distance)
+    inliers, coefficients = seg.segment()
     
     # TODO: Extract inliers and outliers
     # how close a point must be to the model in order to be considered as an inlier
-    max_distance = 0.005 # [m]
-    seg.set_distance_threshold(max_distance)
-    inliers, coefficients = seg.segment()
     cloud_table = cloud_filtered.extract(inliers, negative=False)
     cloud_objects = cloud_filtered.extract(inliers, negative=True)
 
@@ -64,9 +64,9 @@ def pcl_callback(pcl_msg):
     # as well as minimum and maximum cluster size (in points)
     # NOTE: These are poor choices of clustering parameters
     # Your task is to experiment and find values that work for segmenting objects.
-    ec.set_ClusterTolerance(0.04) # [m]
-    ec.set_MinClusterSize(150)
-    ec.set_MaxClusterSize(1500)
+    ec.set_ClusterTolerance(0.04) # [m] 0.015	0.04
+    ec.set_MinClusterSize(150)	#20	150
+    ec.set_MaxClusterSize(1500)  
     # Search the k-d tree for clusters
     ec.set_SearchMethod(tree)
     # Extract indices for each of the discovered clusters
@@ -104,15 +104,15 @@ def pcl_callback(pcl_msg):
 
     for index, pts_list in enumerate(cluster_indices):
         # Grab the points for the cluster
-	pcl_cluster = cloud_out.extract(pts_list)
+	pcl_cluster = cloud_objects.extract(pts_list)
         # TODO: convert the cluster from pcl to ROS using helper function
 	ros_cluster_cloud = pcl_to_ros(pcl_cluster)
 
        	# Extract histogram features
         # TODO: complete this step just as you did before in capture_features.py
-        chists = compute_color_histograms(ros_cluster_cloud, using_hsv=True)
+        chists = compute_color_histograms(ros_cluster_cloud, 32, using_hsv=True)	#bins
        	normals = get_normals(ros_cluster_cloud)
-	nhists = compute_normal_histograms(normals)
+	nhists = compute_normal_histograms(normals, 32)
 
         # Compute the associated feature vector
 	feature = np.concatenate((chists, nhists))
@@ -131,7 +131,7 @@ def pcl_callback(pcl_msg):
         # Add the detected object to the list of detected objects.
         do = DetectedObject()
         do.label = label
-        do.cloud = ros_cluster
+        do.cloud = ros_cluster_cloud
         detected_objects.append(do)
 
     # Publish the list of detected objects
@@ -148,6 +148,9 @@ if __name__ == '__main__':
     pcl_sub = rospy.Subscriber("/sensor_stick/point_cloud", pc2.PointCloud2, pcl_callback, queue_size=1)
 
     # TODO: Create Publishers
+    pcl_objects_pub = rospy.Publisher("/pcl_objects", PointCloud2, queue_size=1)
+    pcl_table_pub = rospy.Publisher("/pcl_table", PointCloud2, queue_size=1)
+    pcl_cluster_pub = rospy.Publisher("/pcl_cluster", PointCloud2, queue_size=1)
     # Here you need to create two publishers
     # Call them object_markers_pub and detected_objects_pub
     # Have them publish to "/object_markers" and "/detected_objects" with 

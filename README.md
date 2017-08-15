@@ -33,6 +33,7 @@ $ ./segmentation.py
 ```
 
 [image1]: ./misc_images/exercise2.png
+[image2]: ./misc_images/exercise3.png
 
 
 ![screen shot 2017-07-05 at 12 56 36 pm](https://user-images.githubusercontent.com/20687560/27895526-30da599c-61c8-11e7-80ab-4b4224cfbb10.png)
@@ -120,4 +121,12 @@ If everything went well you now have a trained classifier and you're ready to do
 Make yourself a copy of the `template.py` file in the `sensor_stick/scripts/` directory and call it something like `object_recognition.py`.  Inside this file, you'll find all the TODO's from Exercises 1 and 2 and you can simply copy and paste your code in there from the previous exercises.  
 
 The new code you need to add is listed under the Exercise-3 TODO's in the `pcl_callback()` function.  You'll also need to add some new publishers for outputting your detected object clouds and label markers.  For the step-by-step instructions on what to add in these Exercise-3 TODOs, see the [lesson in the classroom](https://classroom.udacity.com/nanodegrees/nd209/parts/586e8e81-fc68-4f71-9cab-98ccd4766cfe/modules/e5bfcfbd-3f7d-43fe-8248-0c65d910345a/lessons/81e87a26-bd41-4d30-bc8b-e747312102c6/concepts/dfab1b50-2efd-428d-bfd9-d1df0544541e).
+
+## Object recognition
+	roslaunch sensor_stick robot_spawn.launch
+In another terminal:
+	chmod +x object_recognition.py
+	./object_recognition.py
+![object recognition][image2]
+
 
