@@ -110,9 +110,9 @@ def pcl_callback(pcl_msg):
 
        	# Extract histogram features
         # TODO: complete this step just as you did before in capture_features.py
-        chists = compute_color_histograms(ros_cluster_cloud, 32, using_hsv=True)	#bins
+        chists = compute_color_histograms(ros_cluster_cloud, 64, using_hsv=True) #bins was 32
        	normals = get_normals(ros_cluster_cloud)
-	nhists = compute_normal_histograms(normals, 32)
+	nhists = compute_normal_histograms(normals, 64)
 
         # Compute the associated feature vector
 	feature = np.concatenate((chists, nhists))
