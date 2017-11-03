@@ -39,7 +39,7 @@ if __name__ == '__main__':
     for model_name in models:
         spawn_model(model_name)
 
-        for i in range(30):
+        for i in range(100):
             # make five attempts to get a valid a point cloud then give up
             sample_was_good = False
             try_count = 0
@@ -55,9 +55,9 @@ if __name__ == '__main__':
                     sample_was_good = True
 
             # Extract histogram features
-            chists = compute_color_histograms(sample_cloud, using_hsv=True)
+            chists = compute_color_histograms(sample_cloud, 64, using_hsv=True)     #before it was 32
             normals = get_normals(sample_cloud)
-            nhists = compute_normal_histograms(normals)
+            nhists = compute_normal_histograms(normals, 64)                         #before it was 32
             feature = np.concatenate((chists, nhists))
             labeled_features.append([feature, model_name])
 

@@ -62,10 +62,10 @@ encoder = LabelEncoder()
 y_train = encoder.fit_transform(y_train)
 
 # Create classifier
-#clf = svm.SVC(kernel='linear')
+clf = svm.SVC(kernel='linear')
 #clf = svm.LinearSVC()
 #clf = svm.SVC(C=60)
-clf = svm.SVC(C=10.0) #Got an accuracy of 0.81 (+-0.2)
+#clf = svm.SVC(C=10.0) #Got an accuracy of 0.81 (+-0.2)
 
 
 # Set up 5-fold cross-validation
