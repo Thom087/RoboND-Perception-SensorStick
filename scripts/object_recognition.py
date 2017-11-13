@@ -36,7 +36,7 @@ def pcl_callback(pcl_msg):
     passthrough = cloud_filtered.make_passthrough_filter()
     filter_axis = 'z'
     passthrough.set_filter_field_name (filter_axis)
-    axis_min = 0.77	# all under axis_min [m] is erased
+    axis_min = 0.76	# all under axis_min [m] is erased
     axis_max = 1.1	# all over axis_max [m] is erased
     passthrough.set_filter_limits (axis_min, axis_max)
     cloud_filtered = passthrough.filter()
@@ -45,7 +45,7 @@ def pcl_callback(pcl_msg):
     seg = cloud_filtered.make_segmenter()
     seg.set_model_type(pcl.SACMODEL_PLANE)
     seg.set_method_type(pcl.SAC_RANSAC)
-    max_distance = 0.005 # [m] 0.01
+    max_distance = 0.01 # [m] 0.01 max dist of point to be considered fitting the model
     seg.set_distance_threshold(max_distance)
     inliers, coefficients = seg.segment()
     
@@ -64,9 +64,9 @@ def pcl_callback(pcl_msg):
     # as well as minimum and maximum cluster size (in points)
     # NOTE: These are poor choices of clustering parameters
     # Your task is to experiment and find values that work for segmenting objects.
-    ec.set_ClusterTolerance(0.04) # [m] 0.015	0.04
-    ec.set_MinClusterSize(150)	#20	150
-    ec.set_MaxClusterSize(1500)  
+    ec.set_ClusterTolerance(0.05) # [m] 	0.04
+    ec.set_MinClusterSize(30)	#20-50
+    ec.set_MaxClusterSize(2500) #2500-3000 
     # Search the k-d tree for clusters
     ec.set_SearchMethod(tree)
     # Extract indices for each of the discovered clusters
@@ -104,18 +104,18 @@ def pcl_callback(pcl_msg):
 
     for index, pts_list in enumerate(cluster_indices):
         # Grab the points for the cluster
-	pcl_cluster = cloud_objects.extract(pts_list)
+        pcl_cluster = cloud_objects.extract(pts_list)
         # TODO: convert the cluster from pcl to ROS using helper function
-	ros_cluster_cloud = pcl_to_ros(pcl_cluster)
+        ros_cluster_cloud = pcl_to_ros(pcl_cluster)
 
-       	# Extract histogram features
+        # Extract histogram features
         # TODO: complete this step just as you did before in capture_features.py
-        chists = compute_color_histograms(ros_cluster_cloud, 64, using_hsv=True) #bins was 32
-       	normals = get_normals(ros_cluster_cloud)
-	nhists = compute_normal_histograms(normals, 64)
+        chists = compute_color_histograms(ros_cluster_cloud, using_hsv=True) #bins was 32
+        normals = get_normals(ros_cluster_cloud)
+        nhists = compute_normal_histograms(normals)
 
         # Compute the associated feature vector
-	feature = np.concatenate((chists, nhists))
+        feature = np.concatenate((chists, nhists))
 
         # Make the prediction, retrieve the label for the result
         # and add it to detected_objects_labels list
@@ -142,7 +142,7 @@ def pcl_callback(pcl_msg):
 if __name__ == '__main__':
 
     # TODO: ROS node initialization
-    rospy.init_node('clustering', anonymous=True)
+    rospy.init_node('object_recognition', anonymous=True)
 
     # TODO: Create Subscribers
     pcl_sub = rospy.Subscriber("/sensor_stick/point_cloud", pc2.PointCloud2, pcl_callback, queue_size=1)
@@ -171,4 +171,4 @@ if __name__ == '__main__':
 
     # TODO: Spin while node is not shutdown
     while not rospy.is_shutdown():
- 	rospy.spin()
+        rospy.spin()
